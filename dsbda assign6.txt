@@ -1,0 +1,31 @@
+import pandas as pd
+import seaborn as sns
+from sklearn.naive_bayes import GaussianNB
+from sklearn.model_selection import train_test_split
+
+df = sns.load_dataset('iris')
+df
+
+x = df.iloc[:,:-1]
+y = df.iloc[:,4:5]
+print(x,y)
+
+x_train,x_test,y_train,y_test = train_test_split(x,y,test_size=0.2,random_state = 42)
+
+classifier = GaussianNB()
+classifier.fit(x_train,y_train)
+y_pred = classifier.predict(x_test)
+y_pred
+
+from sklearn.metrics import confusion_matrix,precision_score,accuracy_score,recall_score,f1_score
+print ('confusionMatrix:',confusion_matrix(y_test,y_pred))
+
+print('TP=',confusionMatrix[1,1])
+print('fP=',confusionMatrix[0,1])
+print('fN=',confusionMatrix[1,0])
+print('TN=',confusionMatrix[0,0])
+print('accuracy=',accuracy_score(y_test,y_pred))
+print('error=',1-accuracy_score(y_test,y_pred))
+print('f1=',f1_score(y_test,y_pred,average=None))
+print('precision=',precision_score(y_test,y_pred,average=None))
+print('recall=',recall_score(y_test,y_pred,average=None))

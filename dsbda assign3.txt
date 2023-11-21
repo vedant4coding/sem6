@@ -1,0 +1,18 @@
+import pandas as pd
+import numpy as np
+import seaborn as sns
+
+df = sns.load_dataset('titanic')
+
+x=df['age'].mean()
+print (x)
+data= df.groupby('age')['fare']
+summary = data.describe()
+print(summary.head(20))
+
+df2 = sns.load_dataset('iris')
+
+df.groupby(['species']).count()
+
+summary = df.groupby('species')['petal_length','petal_width','sepal_length','sepal_width'].describe()
+print(summary)

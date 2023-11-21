@@ -1,0 +1,60 @@
+import pandas as pd
+
+# Create a sample Academic Performance dataset (replace with your actual data)
+data = {
+    'Student_ID': [1, 2, 3, 4, 5],
+    'Name': ['Alice', 'Bob', 'Charlie', 'David', 'Eve'],
+    'Math_Score': [85, 92, None, 78, 95],  # Example: Missing value
+    'English_Score': [75, 88, 90, 82, 96],
+    'Attendance': [95, 88, 92, 'Present', 98]  # Example: Inconsistency
+}
+
+df = pd.DataFrame(data)
+
+# Check for missing values
+print("Missing Values:")
+print(df.isnull().sum())
+
+# Deal with missing values (replace with mean, median, or other suitable strategies)
+df['Math_Score'].fillna(df['Math_Score'].mean(), inplace=True)
+
+# Deal with inconsistencies (convert 'Present' to a numeric value, e.g., 1 for present, 0 for absent)
+df['Attendance'] = df['Attendance'].apply(lambda x: 1 if x == 'Present' else 0)
+
+# Display the cleaned dataset
+print("\nCleaned Dataset:")
+print(df)
+
+# Assume 'Math_Score' is a numeric variable with potential outliers
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Create a boxplot to visualize outliers
+sns.boxplot(x=df['Math_Score'])
+plt.show()
+
+# Identify and handle outliers (e.g., using IQR method)
+Q1 = df['Math_Score'].quantile(0.25)
+Q3 = df['Math_Score'].quantile(0.75)
+IQR = Q3 - Q1
+
+# Filter out values outside the range [Q1 - 1.5*IQR, Q3 + 1.5*IQR]
+df = df[(df['Math_Score'] >= Q1 - 1.5*IQR) & (df['Math_Score'] <= Q3 + 1.5*IQR)]
+
+# Display the dataset after handling outliers
+print("\nDataset after handling outliers:")
+print(df)
+
+# Assume 'English_Score' needs transformation
+import numpy as np
+
+# Create a histogram to visualize the distribution
+sns.histplot(df['English_Score'], kde=True)
+plt.show()
+
+# Apply a log transformation to decrease skewness
+df['English_Score'] = np.log1p(df['English_Score'])
+
+# Display the dataset after transformation
+print("\nDataset after transformation:")
+print(df)

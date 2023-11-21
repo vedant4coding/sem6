@@ -1,0 +1,33 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import confusion_matrix,accuracy_score,f1_score,precision_score,recall_score
+
+df = pd.read_csv("Social_Network_Ads.csv")
+df
+
+x = df[['Age','EstimatedSalary']]
+y= df['Purchased']
+print (x,y)
+
+x_train,x_test,y_train,y_test = train_test_split(x,y,test_size=0.2,random_state=42)
+# scaler = StandardScaler()
+# x_train = scaler.fit_transform(x_train)
+# y_train = scaler.transform(y_train)
+model = LogisticRegression()
+model.fit(x_train,y_train)
+y_pred = model.predict(x_test)
+confusionMatrix = confusion_matrix(y_test,y_pred)
+
+print(confusionMatrix)
+
+print('TP=',confusionMatrix[1,1])
+print('fP=',confusionMatrix[0,1])
+print('fN=',confusionMatrix[1,0])
+print('TN=',confusionMatrix[0,0])
+
+print('accuracy=',accuracy_score(y_test,y_pred))
+print('error=',1-accuracy_score(y_test,y_pred))
+print('f1=',f1_score(y_test,y_pred))
+print('precision=',precision_score(y_test,y_pred))
+print('recall=',recall_score(y_test,y_pred))

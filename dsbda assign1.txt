@@ -1,0 +1,23 @@
+import numpy as np
+import pandas as pd
+
+df = pd.read_csv('iris.csv')
+df
+
+df.info()
+
+df.describe()
+
+df.isnull().sum()
+
+df.dtypes()
+
+df['species'].unique()
+
+df['petal_width'] = df['petal_width'].astype(int)
+
+df.dtypes()
+
+df.species.replace(['setosa','versicolor','verginica'],[0,1,2],inplace=True)
+
+df
