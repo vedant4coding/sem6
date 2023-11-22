@@ -1,0 +1,43 @@
+import nltk
+import pandas as pd
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer, WordNetLemmatizer
+from nltk.tokenize import word_tokenize, sent_tokenize
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+# Sample document
+document = "This is a sample document. It contains multiple sentences."
+
+# Tokenization
+tokens = word_tokenize(document)
+
+# POS Tagging
+pos_tags = nltk.pos_tag(tokens)
+
+# Stop words removal
+stop_words = set(stopwords.words('english'))
+filtered_tokens = [token for token in tokens if token.lower() not in stop_words]
+
+# Stemming
+stemmer = PorterStemmer()
+stemmed_tokens = [stemmer.stem(token) for token in filtered_tokens]
+
+# Lemmatization
+lemmatizer = WordNetLemmatizer()
+lemmatized_tokens = [lemmatizer.lemmatize(token) for token in filtered_tokens]
+
+# TF-IDF representation
+documents = [document]
+vectorizer = TfidfVectorizer()
+tfidf_matrix = vectorizer.fit_transform(documents)
+features = vectorizer.get_feature_names()
+tfidf_representation = pd.DataFrame(tfidf_matrix.toarray(), columns=features)
+
+# Print the results
+print("Tokenization:", tokens)
+print("POS Tagging:", pos_tags)
+print("Stop words removal:", filtered_tokens)
+print("Stemming:", stemmed_tokens)
+print("Lemmatization:", lemmatized_tokens)
+print("TF-IDF Representation:")
+print(tfidf_representation)
